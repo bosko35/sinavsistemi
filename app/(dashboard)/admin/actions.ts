@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function getModules() {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     const { data, error } = await supabase
         .from('modules')
         .select('*')
@@ -19,7 +19,7 @@ export async function getModules() {
 }
 
 export async function createModule(formData: FormData) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     const title = formData.get('title') as string
     const description = formData.get('description') as string
     const order = parseInt(formData.get('order') as string)
@@ -45,7 +45,7 @@ export async function createVideo(data: {
     duration: number
     order: number
 }) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { error } = await supabase.from('videos').insert({
         module_id: data.moduleId,
@@ -66,7 +66,7 @@ export async function createVideo(data: {
 }
 
 export async function getExams() {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { data, error } = await supabase
         .from('exams')
@@ -92,7 +92,7 @@ export async function createExam(data: {
     passingScore: number
     duration: number
 }) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { error } = await supabase.from('exams').insert({
         module_id: data.moduleId,
@@ -113,7 +113,7 @@ export async function createExam(data: {
 }
 
 export async function getVideosByModule(moduleId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     const { data, error } = await supabase
         .from('videos')
         .select('id, title')
@@ -128,7 +128,7 @@ export async function getVideosByModule(moduleId: string) {
 }
 
 export async function getExam(examId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { data, error } = await supabase
         .from('exams')
@@ -151,7 +151,7 @@ export async function createQuestion(data: {
     points: number
     options: { text: string; isCorrect: boolean }[]
 }) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     // 1. Create Question
     const { data: questionData, error: questionError } = await supabase
@@ -190,7 +190,7 @@ export async function createQuestion(data: {
 }
 
 export async function getQuestions(examId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { data, error } = await supabase
         .from('questions')
@@ -210,7 +210,7 @@ export async function getQuestions(examId: string) {
 }
 
 export async function deleteQuestion(questionId: string, examId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { error } = await supabase
         .from('questions')
@@ -227,7 +227,7 @@ export async function deleteQuestion(questionId: string, examId: string) {
 }
 
 export async function uploadQuestionsFromExcel(examId: string, data: any[]) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     let successCount = 0
     let errors = []
 

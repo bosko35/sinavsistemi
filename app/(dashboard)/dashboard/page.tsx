@@ -6,7 +6,7 @@ import { CheckCircle2, Circle, PlayCircle, FileQuestion, RotateCcw } from 'lucid
 import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { data: { user } } = await supabase.auth.getUser()
 
