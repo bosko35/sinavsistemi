@@ -25,13 +25,17 @@ export function QuestionUploadForm({ examId }: { examId: string }) {
                 const data = XLSX.utils.sheet_to_json(ws)
 
                 // Veriyi işle ve sunucuya gönder
-                const result = await uploadQuestionsFromExcel(examId, data)
+                const result: any = await uploadQuestionsFromExcel(examId, data)
 
                 if (result.success) {
-                    alert(`${result.count} soru başarıyla yüklendi!`)
+                    if (result.errors && result.errors.length > 0) {
+                        alert(`${result.count} soru yüklendi. Bazı hatalar oluştu:\n` + result.errors.slice(0, 5).join('\n') + (result.errors.length > 5 ? '\n...' : ''))
+                    } else {
+                        alert(`${result.count} soru başarıyla yüklendi!`)
+                    }
                     window.location.reload()
                 } else {
-                    alert('Hata: ' + result.error)
+                    alert('Hata oluştu.')
                 }
                 setUploading(false)
             }
