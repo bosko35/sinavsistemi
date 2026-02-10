@@ -31,7 +31,7 @@ export default async function VideosAdminPage() {
                         {modules.length === 0 ? (
                             <li className="text-gray-500 italic">Henüz modül yok.</li>
                         ) : (
-                            modules.map((module) => (
+                            modules.map((module: any) => (
                                 <li key={module.id} className="p-3 border rounded shadow-sm bg-white flex justify-between items-center">
                                     <div>
                                         <span className="font-medium block">{module.title}</span>
