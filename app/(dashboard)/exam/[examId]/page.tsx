@@ -19,7 +19,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
     if (!user) redirect('/login')
 
     // Fetch exam data
-    const examData = await getExamWithQuestions(examId)
+    const examData: any = await getExamWithQuestions(examId)
 
     if (!examData || !examData.exam) {
         return <div className="p-8">Sınav bulunamadı.</div>

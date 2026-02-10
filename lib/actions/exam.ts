@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function getExamForVideo(videoId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     const { data, error } = await supabase
         .from('exams')
@@ -17,7 +17,7 @@ export async function getExamForVideo(videoId: string) {
 }
 
 export async function getExamWithQuestions(examId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
 
     // 1. Get Exam Details
     const { data: exam, error: examError } = await supabase
@@ -41,7 +41,7 @@ export async function getExamWithQuestions(examId: string) {
     if (questionsError) return null
 
     // Sort options by order
-    questions?.forEach(q => {
+    questions?.forEach((q: any) => {
         if (q.question_options) {
             q.question_options.sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
         }
@@ -51,7 +51,7 @@ export async function getExamWithQuestions(examId: string) {
 }
 
 export async function startExamAttempt(examId: string) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) return { error: 'Unauthorized' }
@@ -74,7 +74,7 @@ export async function startExamAttempt(examId: string) {
 }
 
 export async function submitExamAttempt(attemptId: string, answers: { questionId: string, optionId: string }[]) {
-    const supabase = await createClient()
+    const supabase = (await createClient()) as any
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) return { error: 'Unauthorized' }
@@ -107,17 +107,17 @@ export async function submitExamAttempt(attemptId: string, answers: { questionId
     const answersToInsert: any[] = []
 
     // Map for quick lookup
-    const questionMap = new Map(questions.map(q => [q.id, q]))
+    const questionMap = new Map((questions as any[]).map((q: any) => [q.id, q]))
 
     for (const ans of answers) {
         const question = questionMap.get(ans.questionId)
         if (!question) continue
 
-        const selectedOption = question.question_options.find((o: any) => o.id === ans.optionId)
+        const selectedOption = (question as any).question_options.find((o: any) => o.id === ans.optionId)
         const isCorrect = selectedOption?.is_correct || false
 
         if (isCorrect) {
-            totalScore += question.points || 0
+            totalScore += (question as any).points || 0
         }
 
         answersToInsert.push({
@@ -129,7 +129,7 @@ export async function submitExamAttempt(attemptId: string, answers: { questionId
     }
 
     // Calculate max score
-    questions.forEach(q => maxScore += q.points || 0)
+    questions.forEach((q: any) => maxScore += q.points || 0)
 
     // Determine pass/fail
     // If maxScore is 0 (no questions?), pass.
