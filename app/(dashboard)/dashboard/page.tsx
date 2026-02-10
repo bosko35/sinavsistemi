@@ -69,7 +69,7 @@ export default async function DashboardPage() {
 
 
         // Join videos to modules
-        modules = (dbModules || []).map(m => ({
+        modules = (dbModules || []).map((m: any) => ({
             ...m,
             videos: (dbVideos || []).filter((v: any) => v.module_id === m.id)
         }))
